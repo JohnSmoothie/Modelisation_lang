@@ -1,8 +1,9 @@
 package langModel;
 
-import java.util.HashSet;
+import java.util.List;
+import java.util.ArrayList;
 import java.util.Set;
-
+import java.util.HashSet;
 
 /**
  * Class Vocabulary: class implementing the interface VocabularyInterface.
@@ -25,6 +26,8 @@ public class Vocabulary implements VocabularyInterface {
 
 
     /**
+     * Getter of the size of the vocabulary
+     *
      * @return the size of the vocabulary Set
      */
     @Override
@@ -33,6 +36,8 @@ public class Vocabulary implements VocabularyInterface {
     }
 
     /**
+     * Method returning the list of words of the vocabulary.
+     *
      * @return the vocabulary Set
      */
     @Override
@@ -41,6 +46,8 @@ public class Vocabulary implements VocabularyInterface {
     }
 
     /**
+     * Method testing if the word is present in the vocabulary.
+     *
      * @param word the word to consider.
      *
      * @return true if the vocabulary contains the word, false otherwise
@@ -51,6 +58,8 @@ public class Vocabulary implements VocabularyInterface {
     }
 
     /**
+     * Method adding a word to the vocabulary.
+     *
      * @param word the word to add.
      */
     @Override
@@ -59,6 +68,8 @@ public class Vocabulary implements VocabularyInterface {
     }
 
     /**
+     * Method removing a word from the vocabulary.
+     *
      * @param word the word to remove.
      */
     @Override
@@ -66,22 +77,42 @@ public class Vocabulary implements VocabularyInterface {
         this.vocabulary.remove(word);
     }
 
+    /**
+     * Method parsing the given set of n-grams and, for each n-gram, listing
+     * its words and adding them to the vocabulary.
+     * The set of n-grams can come from the set of n-grams present in a NgramCountsInterface object.
+     *
+     * @param ngramSet the set of n-grams whose words to add to the vocabulary.
+     */
     @Override
     public void scanNgramSet(Set<String> ngramSet) {
         // TODO Auto-generated method stub
 
     }
 
+    /**
+     * Method reading a vocabulary from a file containing one word per line.
+     *
+     * @param filePath the path of the file containing the vocabulary.
+     */
     @Override
     public void readVocabularyFile(String filePath) {
-        // TODO Auto-generated method stub
-
+        List<String> words = MiscUtils.readTextFileAsStringList(filePath);
+        for (int i = 0; i < words.size(); i++) {
+            this.addWord(words.get(i));
+        }
     }
 
+    /**
+     * Method writing a vocabulary to a file with one word per line.
+     *
+     * @param filePath the path of the file o contain the vocabulary.
+     */
     @Override
     public void writeVocabularyFile(String filePath) {
-        // TODO Auto-generated method stub
-
+        for (String word : this.getWords()) {
+            MiscUtils.writeFile(word, filePath, true);
+        }
     }
 
 }
