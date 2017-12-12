@@ -25,7 +25,7 @@ public class Vocabulary implements VocabularyInterface {
 
 
     /**
-     * @return The size of the vocabulary Set
+     * @return the size of the vocabulary Set
      */
     @Override
     public int getSize() {
@@ -33,29 +33,37 @@ public class Vocabulary implements VocabularyInterface {
     }
 
     /**
-     * @return The vocabulary Set
+     * @return the vocabulary Set
      */
     @Override
     public Set<String> getWords() {
-       return  this.vocabulary;
+        return this.vocabulary;
     }
 
+    /**
+     * @param word the word to consider.
+     *
+     * @return true if the vocabulary contains the word, false otherwise
+     */
     @Override
     public boolean contains(String word) {
-        // TODO Auto-generated method stub
-        return false;
+        return (this.vocabulary.contains(word));
     }
 
+    /**
+     * @param word the word to add.
+     */
     @Override
     public void addWord(String word) {
-        // TODO Auto-generated method stub
-
+        this.vocabulary.add(word);
     }
 
+    /**
+     * @param word the word to remove.
+     */
     @Override
     public void removeWord(String word) {
-        // TODO Auto-generated method stub
-
+        this.vocabulary.remove(word);
     }
 
     @Override
