@@ -6,6 +6,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.HashSet;
+import java.util.Set;
 
 
 /**
@@ -94,5 +95,28 @@ public class VocabularyTest {
         VocabularyInterface vocabulary_test = new Vocabulary();
         vocabulary_test.readVocabularyFile(newPath);
         assertEquals(true, vocabulary_test.contains("bonjour"));
+    }
+
+    @Test
+    public void scanNgramSet1() {
+        Set<String> ngramTest = new HashSet<String>();
+        ngramTest.add("<s>");
+        ngramTest.add("il");
+        ngramTest.add("fait");
+        ngramTest.add("beau");
+        ngramTest.add("</s>");
+        ngramTest.add("<s> il");
+        ngramTest.add("il fait");
+        ngramTest.add("fait beau");
+        ngramTest.add("beau </s>");
+        ngramTest.add("<s> il fait");
+        ngramTest.add("il fait beau");
+        ngramTest.add("fait beau </s>");
+        VocabularyInterface vocabulary_test = new Vocabulary();
+        vocabulary_test.scanNgramSet(ngramTest);
+
+        vocabulary_test.writeVocabularyFile("lm/small_corpus/vocabulary1_in_test2.txt");
+
+        assertEquals(true, vocabulary_test.contains("fait"));
     }
 }
