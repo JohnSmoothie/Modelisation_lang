@@ -1,7 +1,12 @@
 package langModel;
 
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Scanner;
+
+
 
 
 /**
@@ -20,8 +25,14 @@ public class NgramUtils {
 	 * @return the number of words of the given sequence.
 	 */
 	public static int getSequenceSize (String sequence) {
-		//TODO
-		return -1;
+		Scanner sc = new Scanner(sequence);
+		sc.useDelimiter(" ");
+		int cmp = 0;
+		while(sc.hasNext()) {
+			cmp++;
+			sc.next();
+		}
+		return cmp;
 	}
 
 	
@@ -39,9 +50,22 @@ public class NgramUtils {
 	 * @return history of the given n-gram (the length of the history is order-1).  
 	 */
 	public static String getHistory (String ngram, int order) {
-		//TODO
-		
-		return "";
+		String res = "";
+		if(order >= 1) {
+			String[] wArray = ngram.split(" ");
+			List<String> wordList = Arrays.asList(wArray);
+			
+			int taille = wordList.size();
+			String lastWord = wordList.get(taille);
+			if(order == 1) {
+				res = lastWord;
+			} else {
+				for(int i = taille-1; i>taille; i--) {
+					res += wordList.get(i);
+				}
+			}
+		}
+		return res;
 	}
 
 
@@ -61,8 +85,14 @@ public class NgramUtils {
 	 * @return the list of n-grams constructed from the sentence.
 	 */
 	public static List<String> decomposeIntoNgrams (String sentence, int order) {
-		//TODO
-		return null;
+		List<String> list = new ArrayList<String>();
+		String[] wArray = sentence.split(" ");
+		List<String> listTemp = Arrays.asList(wArray);
+		
+		
+		
+		
+		return list;
 	}
 	
 	
