@@ -1,3 +1,0 @@
-<s> antoine écoute thom </s>
-<s> denis écoute une autre chanson </s>
-<s> elle écoute une chanson de lionel </s>
