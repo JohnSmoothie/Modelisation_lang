@@ -40,14 +40,17 @@ public class NgramUtils {
      * @return history of the given n-gram (the length of the history is order-1).
      */
     public static String getHistory(String ngram, int order) {
-        StringJoiner history = new StringJoiner(" ");
+        StringBuilder history = new StringBuilder();
         String[] words = ngram.split("\\s+");
 
-        for(int i = words.length - order; i > words.length && i >= 0; i++) {
-            history.add(words[i]);
+        if (order == 1) {
+            history.append(words[words.length - 1]);
+        }
+        for (int i = words.length - order; i < words.length - 1 && i >= 0; i++) {
+            history.append(words[i]).append(" ");
         }
 
-        return history.toString();
+        return history.toString().trim();
     }
 
 
@@ -68,33 +71,18 @@ public class NgramUtils {
      * @return the list of n-grams constructed from the sentence.
      */
     public static List<String> decomposeIntoNgrams(String sentence, int order) {
-        /*List<String> ngramsList = new ArrayList<String>();
-        List<String> wordList = Arrays.asList(sentence.split(" "));
-        StringJoiner ngram = new StringJoiner(" ");
+        if (sentence.trim().equals("")) return null;
 
-        if (order == 1) {
-                ngramsList.addAll(wordList);
-        } else {
-            for (int i = wordList.size() - 1; i >= 0; i--) {
-                if (i - order >= 0) {
-                    ngramsList.add(getHistory(sentence.substring(0, i), order));
-                } else {
-                    order--;
-                }
-            }
-        }
-        return ngramsList;*/
-        List<String> ngrams = new ArrayList();
-        String[] words = sentence.split("\\s+");
-        StringBuffer parsedSentence = new StringBuffer();
+        List<String> ngramsList = new ArrayList<>();
+        String[] words = sentence.trim().split("\\s+");
+        StringBuilder subSentence = new StringBuilder();
 
-        for(int i = 0; i < words.length; ++i) {
-            parsedSentence.append(" ");
-            parsedSentence.append(words[i]);
-            ngrams.add((getHistory(parsedSentence.toString(), order) + " " + words[i]).trim());
+        for (String word : words) {
+            subSentence.append(word.trim()).append(" ");
+            ngramsList.add(getHistory(subSentence.toString().trim(), order).trim() + " " + word.trim());
         }
 
-        return ngrams;
+        return ngramsList;
     }
 
 

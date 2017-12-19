@@ -1,9 +1,6 @@
 package langModel;
 
-import java.util.List;
-import java.util.ArrayList;
-import java.util.Set;
-import java.util.HashSet;
+import java.util.*;
 
 /**
  * Class Vocabulary: class implementing the interface VocabularyInterface.
@@ -86,8 +83,18 @@ public class Vocabulary implements VocabularyInterface {
      */
     @Override
     public void scanNgramSet(Set<String> ngramSet) {
-        // TODO Auto-generated method stub
+        Iterator iterator = ngramSet.iterator();
 
+        while (iterator.hasNext()) {
+            String ngram = (String) iterator.next();
+            String[] words = ngram.split("\\s+");
+            int word_length = words.length;
+
+            for (int i = 0; i < word_length; ++i) {
+                String word = words[i];
+                this.addWord(word);
+            }
+        }
     }
 
     /**
@@ -111,7 +118,7 @@ public class Vocabulary implements VocabularyInterface {
     @Override
     public void writeVocabularyFile(String filePath) {
         for (String word : this.getWords()) {
-            MiscUtils.writeFile(word, filePath, true);
+            MiscUtils.writeFile(word + "\n", filePath, true);
         }
     }
 
