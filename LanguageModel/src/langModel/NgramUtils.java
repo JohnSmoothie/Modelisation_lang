@@ -21,7 +21,7 @@ public class NgramUtils {
      */
     public static int getSequenceSize(String sequence) {
         if (sequence.trim().equals("")) return 0;
-        return sequence.split("\\s+").length;
+        else return sequence.split("\\s+").length;
     }
 
 
@@ -43,11 +43,16 @@ public class NgramUtils {
         StringBuilder history = new StringBuilder();
         String[] words = ngram.split("\\s+");
 
-        if (order == 1) {
-            history.append(words[words.length - 1]);
-        }
-        for (int i = words.length - order; i < words.length - 1 && i >= 0; i++) {
-            history.append(words[i]).append(" ");
+        /*for(int i = words.length - 2; i >= 0 && i >= words.length - order; i--) {
+            history.append(words[i]);
+            history.append(" ");
+        }*/
+
+        if (words.length - order < 0) order--;
+
+        for (int i = words.length - order; i >= 0 && i < words.length - 1; i++) {
+            history.append(words[i]);
+            history.append(" ");
         }
 
         return history.toString().trim();
@@ -73,16 +78,23 @@ public class NgramUtils {
     public static List<String> decomposeIntoNgrams(String sentence, int order) {
         if (sentence.trim().equals("")) return null;
 
-        List<String> ngramsList = new ArrayList<>();
-        String[] words = sentence.trim().split("\\s+");
+        List<String> ngramsList = new ArrayList<String>();
+        String[] words = sentence.split("\\s+");
         StringBuilder subSentence = new StringBuilder();
 
         for (String word : words) {
-            subSentence.append(word.trim()).append(" ");
-            ngramsList.add(getHistory(subSentence.toString().trim(), order).trim() + " " + word.trim());
+            subSentence.append(word);
+            subSentence.append(" ");
+            ngramsList.add(getHistory(subSentence.toString(), order) + " " + word);
         }
 
-        return ngramsList;
+        List<String> res = new ArrayList<String>();
+
+        for (String ngram : ngramsList) {
+            ngram = ngram.trim();
+            res.add(ngram);
+        }
+        return res;
     }
 
 
@@ -114,8 +126,23 @@ public class NgramUtils {
      * @return a list of generated n-grams from the sentence.
      */
     public static List<String> generateNgrams(String sentence, int minOrder, int maxOrder) {
-        //TODO
-        return null;
+        List<String> ngramsList = new ArrayList<>();
+        String words[] = sentence.split("\\s+");
+        StringBuilder ngramParsedSentence;
+
+        if (minOrder <= maxOrder && minOrder > 0 && maxOrder < words.length) {
+            for (int n = minOrder; n <= maxOrder; n++) {
+                for (int i = 0; i <= words.length - n; i++) {
+                    ngramParsedSentence = new StringBuilder();
+                    for (int j = i; j < i + n; j++) {
+                        ngramParsedSentence.append(" ");
+                        ngramParsedSentence.append(words[j]);
+                    }
+                    ngramsList.add(ngramParsedSentence.toString().trim());
+                }
+            }
+        }
+        return ngramsList;
     }
 
     /**
@@ -128,8 +155,17 @@ public class NgramUtils {
      * @return the sequence of words with OOV tags according to the vocabulary.
      */
     public static String getStringOOV(String s, VocabularyInterface vocab) {
-        //TODO
-        return "";
+        String[] words = s.split("\\s+");
+        StringBuilder newSentence = new StringBuilder();
+
+        for (String word : words) {
+            if (vocab.contains(word)) {
+                word = VocabularyInterface.OOV_TAG;
+            }
+            newSentence.append(word);
+            newSentence.append(" ");
+        }
+        return newSentence.toString().trim();
     }
 
 }

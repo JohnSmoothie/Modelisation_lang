@@ -55,7 +55,26 @@ public class NgramUtilsTest {
      */
     @Test
     public void testGenerateNgrams() {
-        fail("Not implemented yet");
+        List<String> list = new ArrayList<String>();
+        list.add("a");
+        list.add("b");
+        list.add("c");
+        list.add("d");
+        list.add("e");
+        list.add("f");
+        list.add("g");
+        list.add("a b");
+        list.add("b c");
+        list.add("c d");
+        list.add("d e");
+        list.add("e f");
+        list.add("f g");
+        list.add("a b c");
+        list.add("b c d");
+        list.add("c d e");
+        list.add("d e f");
+        list.add("e f g");
+        assertEquals(list, NgramUtils.generateNgrams("a b c d e f g",1, 3));
     }
 
     /**
@@ -63,14 +82,6 @@ public class NgramUtilsTest {
      */
     @Test
     public void testGetHistory() {
-        assertEquals("phrase", NgramUtils.getHistory("l' historique de cette phrase", 1));
-    }
-
-    /**
-     * Test method for {@link langModel.NgramUtils#generateNgrams(java.lang.String, int, int)}.
-     */
-    @Test
-    public void testGetHistory2() {
         assertEquals("cette", NgramUtils.getHistory("l' historique de cette phrase", 2));
     }
 
@@ -78,7 +89,7 @@ public class NgramUtilsTest {
      * Test method for {@link langModel.NgramUtils#generateNgrams(java.lang.String, int, int)}.
      */
     @Test
-    public void testGetHistory3() {
+    public void testGetHistory2() {
         assertEquals("de cette", NgramUtils.getHistory("l' historique de cette phrase", 3));
     }
 
@@ -107,6 +118,36 @@ public class NgramUtilsTest {
         assertEquals(list, NgramUtils.decomposeIntoNgrams("a b c d e f g", 3));
     }
 
+    @Test
+    public void testGetStringOOV() {
+        Vocabulary voc = new Vocabulary();
+        voc.addWord("bonjour");
+        voc.addWord("salut");
+        String s = "bonjour au revoir salut au revoir";
+
+        assertEquals("<unk> au revoir <unk> au revoir", NgramUtils.getStringOOV(s, voc));
+    }
+
+    @Test
+    public void testGetStringOOV2() {
+        Vocabulary voc = new Vocabulary();
+        voc.addWord("bonjour");
+        String s = "bonjour au revoir salut au revoir";
+
+        assertEquals("<unk> au revoir salut au revoir", NgramUtils.getStringOOV(s, voc));
+    }
+
+    @Test
+    public void testGetStringOOV3() {
+        Vocabulary voc = new Vocabulary();
+        voc.addWord("bonjour");
+        voc.addWord("au");
+        voc.addWord("revoir");
+        voc.addWord("salut");
+        String s = "bonjour au revoir salut au revoir";
+
+        assertEquals("<unk> <unk> <unk> <unk> <unk> <unk>", NgramUtils.getStringOOV(s, voc));
+    }
 
     /**
      * The following code displays a separator
