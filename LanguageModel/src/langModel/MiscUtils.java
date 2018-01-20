@@ -60,7 +60,7 @@ public class MiscUtils {
 	 * @param filename the name of the file.
 	 * @param append true if the text is to append at the end of the file, false otherwise.
 	 */
-	public static void writeFile (String text, String filename, boolean append) {
+	public static void writeFile(String text, String filename, boolean append) {
 		PrintWriter out = null;
 
 		int dirPathEnd = filename.lastIndexOf(File.separator);
